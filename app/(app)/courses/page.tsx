@@ -44,14 +44,7 @@ export default function CoursesPage() {
             />
           </div>
           <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="Filter" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="lms">LMS Only</SelectItem>
-              <SelectItem value="ai">AI Only</SelectItem>
-            </SelectContent>
+
           </Select>
         </div>
       </div>
@@ -59,15 +52,13 @@ export default function CoursesPage() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filteredCourses.map((course) => {
           const isLMS = course.isLMS
-          
+
           const CardContent = (
-            <div className={`flex flex-col justify-between p-6 h-full border rounded-xl shadow-sm transition-all ${
-              isLMS ? "bg-card hover:shadow-md hover:border-primary/50 cursor-pointer" : "bg-muted/40 cursor-not-allowed opacity-60"
-            }`}>
+            <div className={`flex flex-col justify-between p-6 h-full border rounded-xl shadow-sm transition-all ${isLMS ? "bg-card hover:shadow-md hover:border-primary/50 cursor-pointer" : "bg-muted/40 cursor-not-allowed opacity-60"
+              }`}>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  {isLMS && <Badge>LMS Course</Badge>}
-                  {!isLMS && <Badge variant="outline">AI Generated</Badge>}
+
                 </div>
                 <div>
                   <h3 className="font-semibold line-clamp-2">{course.title}</h3>
@@ -88,6 +79,6 @@ export default function CoursesPage() {
           )
         })}
       </div>
-    </div>
+    </div >
   )
 }

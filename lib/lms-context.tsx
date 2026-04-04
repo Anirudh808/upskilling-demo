@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react"
 import coursesData from "@/data/courses.json"
-
+import randomCourses from "@/data/random-course.json"
 export interface LMSCourse {
   id: string
   title: string
@@ -68,7 +68,7 @@ const LMSContext = createContext<LMSContextType | undefined>(undefined)
 
 export function LMSProvider({ children }: { children: React.ReactNode }) {
   const [isClient, setIsClient] = useState(false)
-  
+
   // Real LMS Courses parsed from JSON (Deduplicated, picking the last one for newest drafts)
   const dedupedCourses = Array.from(
     new Map(coursesData.map((c: any) => [c.course.id, c])).values()
@@ -96,9 +96,9 @@ export function LMSProvider({ children }: { children: React.ReactNode }) {
   }))
 
   // Generate 200 AI courses
-  const initialAICourses: LMSCourse[] = Array.from({ length: 200 }, (_, i) => ({
-    id: `ai-${i + 1}`,
-    title: `AI Course Masterclass: Topic ${i + 1}`,
+  const initialAICourses: LMSCourse[] = randomCourses.map((course: any, i: number) => ({
+    id: `${course.id}`,
+    title: `${course.title}`,
     isLMS: false,
     duration: "4 Weeks",
   }))
