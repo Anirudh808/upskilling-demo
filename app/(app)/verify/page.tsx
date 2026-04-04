@@ -11,7 +11,7 @@ import { certifications } from "@/lib/mock-certs"
 
 export default function VerifyPage() {
   const router = useRouter()
-  const { certificates } = useLMS()
+  const { certificates, userProfile } = useLMS()
   const [certPreview, setCertPreview] = useState<any>(null)
 
   return (
@@ -73,11 +73,18 @@ export default function VerifyPage() {
       {/* Certificate Preview Popup */}
       <Dialog open={!!certPreview} onOpenChange={(val) => !val && setCertPreview(null)}>
         <DialogContent className="max-w-3xl border-8 border-double border-muted">
+          <DialogHeader>
+            <DialogTitle className="sr-only">Certificate of Completion</DialogTitle>
+          </DialogHeader>
           {certPreview && (
             <div className="p-8 text-center space-y-6">
               <div className="flex justify-center text-yellow-500 mb-6"><Trophy className="w-24 h-24" /></div>
               <h2 className="text-5xl font-serif font-bold uppercase tracking-widest text-primary">Certificate of Completion</h2>
-              <p className="text-xl text-muted-foreground italic">This officially verifies the successful accomplishment of</p>
+              <p className="text-xl text-muted-foreground italic">This officially certifies that</p>
+              <p className="text-2xl font-bold text-foreground">
+                {userProfile ? `${userProfile.firstName} ${userProfile.lastName}`.trim() : "Student"}
+              </p>
+              <p className="text-xl text-muted-foreground italic">has successfully completed</p>
               <h3 className="text-3xl font-bold">{certPreview.courseName}</h3>
               <p className="text-lg">Issued on: {new Date(certPreview.issueDate).toLocaleDateString()}</p>
               <div className="mt-8 pt-8 border-t border-muted-foreground/30 flex justify-between items-end">

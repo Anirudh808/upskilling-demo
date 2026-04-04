@@ -14,16 +14,24 @@ import { toast } from "sonner"
 export default function ProfilePage() {
   const { userProfile, updateProfile, certificates } = useLMS()
   const [profile, setProfile] = useState<Partial<UserProfile>>({
-    firstName: "", lastName: "", email: "", age: "", userName: "", bio: "", preferredJobRole: "",
+    firstName: "Priya", lastName: "Sharma", email: "[EMAIL_ADDRESS]", age: "22", userName: "priya_sharma", bio: "", preferredJobRole: "",
     skills: [], education: [{ school: "", university: "", cgpa: "", completionYear: "" }],
     socialMedia: { linkedin: "", github: "", portfolio: "" }
   })
   const [skillInput, setSkillInput] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
-  
+
   useEffect(() => {
-    if (userProfile) setProfile(userProfile)
+    // Load from context (which reads localStorage) OR fall back to localStorage directly
+    if (userProfile) {
+      setProfile(userProfile)
+    } else {
+      try {
+        const stored = localStorage.getItem("lms_profile")
+        if (stored) setProfile(JSON.parse(stored))
+      } catch {}
+    }
   }, [userProfile])
 
   const handleSave = (e: React.FormEvent) => {
@@ -41,6 +49,8 @@ export default function ProfilePage() {
       return
     }
     updateProfile(profile as UserProfile)
+    // Also write directly to ensure persistence
+    localStorage.setItem("lms_profile", JSON.stringify(profile))
     toast.success("Profile saved successfully!")
   }
 
@@ -90,50 +100,50 @@ export default function ProfilePage() {
       <div className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
           <Card>
-             <CardHeader><CardTitle>Basic Information</CardTitle></CardHeader>
-             <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>First Name *</Label>
-                    <Input value={profile.firstName} onChange={e => { setProfile({...profile, firstName: e.target.value}); setErrors(prev => ({ ...prev, firstName: "" })) }} />
-                    {errors.firstName && <p className="text-xs text-destructive">{errors.firstName}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Last Name *</Label>
-                    <Input value={profile.lastName} onChange={e => { setProfile({...profile, lastName: e.target.value}); setErrors(prev => ({ ...prev, lastName: "" })) }} />
-                    {errors.lastName && <p className="text-xs text-destructive">{errors.lastName}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Email *</Label>
-                    <Input type="email" value={profile.email} onChange={e => { setProfile({...profile, email: e.target.value}); setErrors(prev => ({ ...prev, email: "" })) }} />
-                    {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Age *</Label>
-                    <Input type="number" value={profile.age} onChange={e => { setProfile({...profile, age: e.target.value}); setErrors(prev => ({ ...prev, age: "" })) }} />
-                    {errors.age && <p className="text-xs text-destructive">{errors.age}</p>}
-                  </div>
-                  <div className="space-y-2"><Label>Username</Label><Input value={profile.userName} onChange={e => setProfile({...profile, userName: e.target.value})} /></div>
-                  <div className="space-y-2"><Label>Preferred Job Role</Label><Input value={profile.preferredJobRole} onChange={e => setProfile({...profile, preferredJobRole: e.target.value})} /></div>
+            <CardHeader><CardTitle>Basic Information</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>First Name *</Label>
+                  <Input value={profile.firstName} onChange={e => { setProfile({ ...profile, firstName: e.target.value }); setErrors(prev => ({ ...prev, firstName: "" })) }} />
+                  {errors.firstName && <p className="text-xs text-destructive">{errors.firstName}</p>}
                 </div>
                 <div className="space-y-2">
-                  <Label>Bio / About Me</Label>
-                  <Textarea value={profile.bio} onChange={e => setProfile({...profile, bio: e.target.value})} placeholder="Tell us about yourself..." />
+                  <Label>Last Name *</Label>
+                  <Input value={profile.lastName} onChange={e => { setProfile({ ...profile, lastName: e.target.value }); setErrors(prev => ({ ...prev, lastName: "" })) }} />
+                  {errors.lastName && <p className="text-xs text-destructive">{errors.lastName}</p>}
                 </div>
-             </CardContent>
+                <div className="space-y-2">
+                  <Label>Email *</Label>
+                  <Input type="email" value={profile.email} onChange={e => { setProfile({ ...profile, email: e.target.value }); setErrors(prev => ({ ...prev, email: "" })) }} />
+                  {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label>Age *</Label>
+                  <Input type="number" value={profile.age} onChange={e => { setProfile({ ...profile, age: e.target.value }); setErrors(prev => ({ ...prev, age: "" })) }} />
+                  {errors.age && <p className="text-xs text-destructive">{errors.age}</p>}
+                </div>
+                <div className="space-y-2"><Label>Username</Label><Input value={profile.userName} onChange={e => setProfile({ ...profile, userName: e.target.value })} /></div>
+                <div className="space-y-2"><Label>Preferred Job Role</Label><Input value={profile.preferredJobRole} onChange={e => setProfile({ ...profile, preferredJobRole: e.target.value })} /></div>
+              </div>
+              <div className="space-y-2">
+                <Label>Bio / About Me</Label>
+                <Textarea value={profile.bio} onChange={e => setProfile({ ...profile, bio: e.target.value })} placeholder="Tell us about yourself..." />
+              </div>
+            </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row justify-between items-center">
               <CardTitle>Education</CardTitle>
-              <Button variant="outline" size="sm" onClick={addEducation}><PlusCircle className="w-4 h-4 mr-2"/>Add</Button>
+              <Button variant="outline" size="sm" onClick={addEducation}><PlusCircle className="w-4 h-4 mr-2" />Add</Button>
             </CardHeader>
             <CardContent className="space-y-6">
               {profile.education?.map((ed, i) => (
                 <div key={i} className="grid grid-cols-2 gap-4 p-4 border rounded-md relative">
                   {profile.education!.length > 1 && (
-                    <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6" 
-                      onClick={() => setProfile({...profile, education: profile.education?.filter((_, idx) => idx !== i)})}>
+                    <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-6 w-6"
+                      onClick={() => setProfile({ ...profile, education: profile.education?.filter((_, idx) => idx !== i) })}>
                       <X className="h-4 w-4" />
                     </Button>
                   )}
@@ -165,7 +175,7 @@ export default function ProfilePage() {
 
               <div className="space-y-3">
                 <Label>Resume (PDF)</Label>
-                <div 
+                <div
                   className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-muted/50 transition-colors"
                   onClick={() => fileInputRef.current?.click()}
                 >
@@ -177,15 +187,15 @@ export default function ProfilePage() {
 
               <div className="space-y-3 pt-4 border-t">
                 <Label>Social Links</Label>
-                <Input placeholder="LinkedIn URL" value={profile.socialMedia?.linkedin} onChange={e => setProfile({...profile, socialMedia: {...profile.socialMedia, linkedin: e.target.value}})} />
-                <Input placeholder="GitHub URL" value={profile.socialMedia?.github} onChange={e => setProfile({...profile, socialMedia: {...profile.socialMedia, github: e.target.value}})} />
-                <Input placeholder="Portfolio URL" value={profile.socialMedia?.portfolio} onChange={e => setProfile({...profile, socialMedia: {...profile.socialMedia, portfolio: e.target.value}})} />
+                <Input placeholder="LinkedIn URL" value={profile.socialMedia?.linkedin} onChange={e => setProfile({ ...profile, socialMedia: { ...profile.socialMedia, linkedin: e.target.value } })} />
+                <Input placeholder="GitHub URL" value={profile.socialMedia?.github} onChange={e => setProfile({ ...profile, socialMedia: { ...profile.socialMedia, github: e.target.value } })} />
+                <Input placeholder="Portfolio URL" value={profile.socialMedia?.portfolio} onChange={e => setProfile({ ...profile, socialMedia: { ...profile.socialMedia, portfolio: e.target.value } })} />
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-primary/5 border-primary/20">
-            <CardHeader><CardTitle className="flex items-center gap-2"><Trophy className="w-5 h-5"/> Earned Certificates</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="flex items-center gap-2"><Trophy className="w-5 h-5" /> Earned Certificates</CardTitle></CardHeader>
             <CardContent>
               {certificates.length === 0 ? (
                 <p className="text-sm text-muted-foreground">No certificates earned yet.</p>
