@@ -7,6 +7,7 @@ import { AppHeader } from "@/components/app-header"
 import { RoleProvider, useRole } from "@/lib/role-context"
 import { Toaster } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
+import { LMSProvider } from "@/lib/lms-context"
 
 function ShellInner({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -24,12 +25,12 @@ function ShellInner({ children }: { children: ReactNode }) {
   // Redirect to appropriate default page on role change
   useEffect(() => {
     const isStudentRole = role === "Student" || role === "Fresher" || role === "Experienced"
-    const studentPages = ["/dashboard", "/learning", "/practice", "/verification", "/projects", "/interviews", "/profile"]
+    const studentPages = ["/dashboard", "/learning", "/practice", "/verification", "/projects", "/interviews", "/profile", "/courses", "/my-courses", "/verify"]
     const recruiterPages = ["/talent-search", "/pipeline", "/hrms"]
     const adminPages = ["/analytics", "/students"]
 
-    if (isStudentRole && !studentPages.includes(pathname)) {
-      router.push("/dashboard")
+    if (isStudentRole && !studentPages.includes(pathname) && !pathname.startsWith("/courses/") && !pathname.startsWith("/verify/")) {
+      router.push("/courses")
     } else if (role === "Recruiter" && !recruiterPages.includes(pathname)) {
       router.push("/talent-search")
     } else if (role === "Admin" && !adminPages.includes(pathname)) {
@@ -84,7 +85,9 @@ function ShellInner({ children }: { children: ReactNode }) {
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <RoleProvider>
-      <ShellInner>{children}</ShellInner>
+      <LMSProvider>
+        <ShellInner>{children}</ShellInner>
+      </LMSProvider>
     </RoleProvider>
   )
 }
