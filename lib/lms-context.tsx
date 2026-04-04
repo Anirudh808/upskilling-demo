@@ -14,7 +14,7 @@ export interface LMSCourse {
       title: string
       lessons: {
         title: string
-        topics: { title: string; subtopics: string[] }[]
+        topics: { title: string; subtopics: { id: string; title: string }[] }[]
       }[]
     }[]
   }[]
@@ -69,8 +69,12 @@ const LMSContext = createContext<LMSContextType | undefined>(undefined)
 export function LMSProvider({ children }: { children: React.ReactNode }) {
   const [isClient, setIsClient] = useState(false)
   
-  // Real LMS Courses parsed from JSON
-  const initialLMSCourses: LMSCourse[] = coursesData.map((c: any) => ({
+  // Real LMS Courses parsed from JSON (Deduplicated, picking the last one for newest drafts)
+  const dedupedCourses = Array.from(
+    new Map(coursesData.map((c: any) => [c.course.id, c])).values()
+  )
+
+  const initialLMSCourses: LMSCourse[] = dedupedCourses.map((c: any) => ({
     id: c.course.id,
     title: c.course.title,
     isLMS: true,
@@ -84,7 +88,7 @@ export function LMSProvider({ children }: { children: React.ReactNode }) {
           title: l.title || "Untitled Lesson",
           topics: (l.topic || []).map((t: any) => ({
             title: t.title || "Untitled Topic",
-            subtopics: (t.subTopic || []).map((st: any) => st.title)
+            subtopics: (t.subTopic || []).map((st: any) => ({ id: st.id || st.title, title: st.title }))
           }))
         }))
       }))

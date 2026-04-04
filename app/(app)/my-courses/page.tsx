@@ -30,7 +30,7 @@ export default function MyCoursesPage() {
             const displayProgress = course.progress > 0 ? course.progress : Math.floor(Math.random() * 60) + 10
 
             return (
-              <Link key={course.id} href={`/courses/${course.id}`} className="block group">
+              <Link key={course.id} href={`/learn/${course.id}`} className="block group">
                 <Card className="h-full flex flex-col transition-all hover:border-primary hover:shadow-md">
                   <CardHeader className="pb-4">
                     <div className="flex items-center justify-between mb-2">

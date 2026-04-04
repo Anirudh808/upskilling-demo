@@ -29,7 +29,7 @@ function ShellInner({ children }: { children: ReactNode }) {
     const recruiterPages = ["/talent-search", "/pipeline", "/hrms"]
     const adminPages = ["/analytics", "/students"]
 
-    if (isStudentRole && !studentPages.includes(pathname) && !pathname.startsWith("/courses/") && !pathname.startsWith("/verify/")) {
+    if (isStudentRole && !studentPages.includes(pathname) && !pathname.startsWith("/courses/") && !pathname.startsWith("/verify/") && !pathname.startsWith("/learn/")) {
       router.push("/courses")
     } else if (role === "Recruiter" && !recruiterPages.includes(pathname)) {
       router.push("/talent-search")

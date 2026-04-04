@@ -86,7 +86,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
                                           {top.subtopics && top.subtopics.length > 0 && (
                                             <div className="mt-1 pl-2 border-l border-primary/20 flex flex-wrap gap-2">
                                               {top.subtopics.map((sub, sIdx) => (
-                                                <Badge variant="outline" key={sIdx} className="text-xs">{sub}</Badge>
+                                                <Badge variant="outline" key={sIdx} className="text-xs">{sub.title}</Badge>
                                               ))}
                                             </div>
                                           )}
