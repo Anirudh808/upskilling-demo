@@ -58,3 +58,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* react-simple-code-editor (Prism) tweaks */
+.code-editor-textarea {
+  caret-color: #fff;
+}
+.code-editor-textarea:focus {
+  outline: none;
+}
+/* Keep the highlighted layer and textarea on transparent backgrounds so the
+   container's dark background shows through the Prism theme. */
+.npm__react-simple-code-editor__textarea:focus {
+  outline: none !important;
+}

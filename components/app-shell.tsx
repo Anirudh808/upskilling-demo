@@ -5,8 +5,12 @@ import { usePathname, useRouter } from "next/navigation"
 import { AppSidebar } from "@/components/app-sidebar"
 import { AppHeader } from "@/components/app-header"
 import { RoleProvider, useRole } from "@/lib/role-context"
+import { EnrollmentProvider } from "@/lib/enrollment-context"
+import { PracticeProvider } from "@/lib/practice-context"
+import { ProjectsProvider } from "@/lib/projects-context"
 import { Toaster } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
+import { catalogCourses, problems, catalogProjects } from "@/lib/data"
 
 function ShellInner({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -24,23 +28,32 @@ function ShellInner({ children }: { children: ReactNode }) {
   // Redirect to appropriate default page on role change
   useEffect(() => {
     const isStudentRole = role === "Student" || role === "Fresher" || role === "Experienced"
-    const studentPages = ["/dashboard", "/learning", "/practice", "/verification", "/projects", "/interviews", "/profile"]
+    const studentPages = ["/dashboard", "/courses", "/learning", "/practice", "/verification", "/projects", "/interviews", "/profile"]
     const recruiterPages = ["/talent-search", "/pipeline", "/hrms"]
     const adminPages = ["/analytics", "/students"]
+    const allowed = (pages: string[]) => pages.some((p) => pathname === p || pathname.startsWith(p + "/"))
 
-    if (isStudentRole && !studentPages.includes(pathname)) {
+    if (isStudentRole && !allowed(studentPages)) {
       router.push("/dashboard")
-    } else if (role === "Recruiter" && !recruiterPages.includes(pathname)) {
+    } else if (role === "Recruiter" && !allowed(recruiterPages)) {
       router.push("/talent-search")
-    } else if (role === "Admin" && !adminPages.includes(pathname)) {
+    } else if (role === "Admin" && !allowed(adminPages)) {
       router.push("/analytics")
     }
   }, [role, pathname, router])
 
-  const breadcrumbs = pathname.split("/").filter(Boolean).map((segment, i, arr) => ({
-    label: segment.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
-    isLast: i === arr.length - 1,
-  }))
+  const breadcrumbs = pathname.split("/").filter(Boolean).map((segment, i, arr) => {
+    const course = catalogCourses.find((c) => c.id === segment)
+    const problem = problems.find((p) => p.id === segment)
+    const project = catalogProjects.find((p) => p.id === segment)
+    return {
+      label: course?.title
+        ?? problem?.title
+        ?? project?.title
+        ?? segment.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+      isLast: i === arr.length - 1,
+    }
+  })
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -84,7 +97,13 @@ function ShellInner({ children }: { children: ReactNode }) {
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <RoleProvider>
-      <ShellInner>{children}</ShellInner>
+      <EnrollmentProvider>
+        <PracticeProvider>
+          <ProjectsProvider>
+            <ShellInner>{children}</ShellInner>
+          </ProjectsProvider>
+        </PracticeProvider>
+      </EnrollmentProvider>
     </RoleProvider>
   )
 }
