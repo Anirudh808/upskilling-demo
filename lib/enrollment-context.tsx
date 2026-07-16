@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 import { catalogCourses, type CatalogCourse } from "@/lib/data"
 
-const STORAGE_KEY = "tv_enrolled_courses"
+const STORAGE_KEY = "sb_enrolled_courses"
 // Priya starts already enrolled in the flagship Backend course (has real content).
 const DEFAULT_ENROLLED = ["c1"]
 

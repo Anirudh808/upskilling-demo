@@ -34,7 +34,7 @@ function MeetModal({ onClose }: { onClose: () => void }) {
               <div className="h-6 w-6 rounded-sm bg-white/10 flex items-center justify-center">
                 <Video className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="text-sm font-medium text-white">TalentVerify Interview</span>
+              <span className="text-sm font-medium text-white">SkillBridge Interview</span>
             </div>
             <div className="h-4 w-px bg-white/20" />
             <span className="text-xs text-white/60 font-mono">{elapsed}</span>

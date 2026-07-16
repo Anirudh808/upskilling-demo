@@ -43,7 +43,7 @@ export function AppSidebar({ open, onClose }: { open: boolean; onClose: () => vo
             <Brain className="h-[18px] w-[18px] text-white" />
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-bold text-white">TalentVerify <span className="text-sidebar-primary">AI</span></span>
+            <span className="text-sm font-bold text-white">Skill<span className="text-sidebar-primary">Bridge</span></span>
             <span className="text-[10px] text-sidebar-foreground/50">Learn · Verify · Get Hired</span>
           </div>
           <button className="ml-auto text-sidebar-foreground/60 hover:text-white md:hidden" onClick={onClose} aria-label="Close sidebar">

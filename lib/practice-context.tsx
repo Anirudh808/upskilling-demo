@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 import { problems, type Problem } from "@/lib/data"
 
-const STORAGE_KEY = "tv_solved_problems"
+const STORAGE_KEY = "sb_solved_problems"
 // Seed from the problems already marked solved in the demo data.
 const DEFAULT_SOLVED = problems.filter((p) => p.status === "Solved").map((p) => p.id)
 

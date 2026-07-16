@@ -7,8 +7,8 @@ const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const _jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains' })
 
 export const metadata: Metadata = {
-  title: 'TalentVerify AI - Learning & Talent Verification Platform',
-  description: 'AI-Powered Learning & Talent Verification Platform for CS/IT careers',
+  title: 'SkillBridge - Learning & Talent Verification Platform',
+  description: 'Learning & Talent Verification Platform for CS/IT careers',
 }
 
 export default function RootLayout({

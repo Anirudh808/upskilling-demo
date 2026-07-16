@@ -28,7 +28,7 @@ interface ScheduledExam {
   datetime: string // "YYYY-MM-DDTHH:MM" (local)
 }
 
-const STORAGE_KEY = "tv_scheduled_exams"
+const STORAGE_KEY = "sb_scheduled_exams"
 // Seed the scheduled list from any "Scheduled" verification in the demo data.
 const SEED_SCHEDULED: ScheduledExam[] = verifications
   .filter((v) => v.status === "Scheduled")

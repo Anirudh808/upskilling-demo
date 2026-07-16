@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 import { catalogProjects, getProjectSteps, type ProjectStatus } from "@/lib/data"
 
-const STORAGE_KEY = "tv_project_steps"
+const STORAGE_KEY = "sb_project_steps"
 
 // Seed a couple of projects so the catalogue shows all three statuses in the demo.
 const seed = (id: string, count: number) => {

@@ -290,7 +290,7 @@ export function ProfileView() {
   const startedProjects = catalogProjects
     .map((p) => ({ project: p, ...progressOf(p.id) }))
     .filter((p) => p.status !== "Not Started")
-  const publicUrl = "https://talentverify.ai/p/priya-sharma"
+  const publicUrl = "https://skillbridge.ai/p/priya-sharma"
 
   const handleCopy = () => {
     navigator.clipboard.writeText(publicUrl).catch(() => {})
